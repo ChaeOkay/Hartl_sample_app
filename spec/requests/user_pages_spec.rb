@@ -7,13 +7,14 @@ describe "User pages" do
   describe "index" do
 
     let(:user) { FactoryGirl.create(:user) }
-    before(:each) do
+    
+    before do
       sign_in user
       visit users_path
     end
     
-    it { should have_selector('h1',     text: "All Users") }
     it { should have_selector('title',  text: "All Users") }
+    it { should have_selector('h1',     text: "All Users") }
     
     describe "pagination" do
       before(:all)  { 30.times { FactoryGirl.create(:user) } }
@@ -27,7 +28,26 @@ describe "User pages" do
           end
         end
       end
+      
+    describe "delete links" do
+        it { should_not have_link('delete') }
+        
+        describe "as an admin user" do
+          let(:admin) { FactoryGirl.create(:admin) }
+          before do
+            sign_in admin
+            visit users_path
+        end
+        
+        it { should have_link('delete', href: user_path(User.first)) }
+        it "should be able to delete another user" do
+          expect { click_link('delete') }.to change(User, :count).by(-1)
+        end
+        it { should_not have_link('delete', href: user_path(admin)) }    
+      end
     end
+  end
+    
     
     it "should list each user" do
       User.all.each do |user|
@@ -126,5 +146,5 @@ describe "User pages" do
       specify { user.reload.email.should == new_email }
     end
   end
-  
 end
+
