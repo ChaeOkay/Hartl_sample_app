@@ -131,15 +131,16 @@ describe User do
       
       it { should_not == user_for_invalid_password }
       specify { user_for_invalid_password.should be_false }
+      end
     end
-  end
   
-  describe "remember token" do
-    before { @user.save }
-    its(:remember_token) { should_not be_blank }
+    describe "remember token" do
+      before { @user.save }
+      its(:remember_token) { should_not be_blank }
     end
     
     describe "micropost associations" do
+      
       before { @user.save }
       let!(:older_micropost) do
         FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)

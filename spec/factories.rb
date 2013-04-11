@@ -7,9 +7,8 @@ FactoryGirl.define do
     password_confirmation "foobar"
   
     factory :admin do
-    admin true
-    
-  end
+    admin true   
+    end
   end
      
     factory :micropost do
