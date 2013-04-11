@@ -62,7 +62,6 @@ describe "AuthenticationPages" do
         end
 
         describe "after signing in" do
-          
           it "should render the desired protected page" do
             page.should have_selector('title', text: 'Edit user')
           end
@@ -78,7 +77,7 @@ describe "AuthenticationPages" do
             
             it "should render the default (profile) page" do
               page.should have_selector('title', text: user.name)
-              end
+              end 
             end
           end
         end
@@ -105,7 +104,23 @@ describe "AuthenticationPages" do
       end
     end
     
+    
+    describe "in the Microposts controllder" do
+      
+      describe "submitting to the create action" do
+        before { post microposts_path }
+        specify { response.should redirect_to(signin_path) }
+      end
+      
+      describe "submitting to the destroy action" do
+        before { post microposts_path(FactoryGirl.create(:micropost)) }
+        specify { response.should redirect_to(signin_path) }
+      end
+    end
+    
+    
     describe "as wrong user" do
+      
       let(:user) { FactoryGirl.create(:user) }
       let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
       before { sign_in user }
@@ -121,4 +136,5 @@ describe "AuthenticationPages" do
       end
     end
   end     
+  
 end
