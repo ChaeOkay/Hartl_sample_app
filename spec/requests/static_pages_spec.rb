@@ -28,6 +28,7 @@ require 'spec_helper'
         it "should render the user's feed" do
           user.feed.each do |item|
             page.should have_selector("li##{item.id}", text: item.content)
+            ends
           end
         end
       end
@@ -68,5 +69,6 @@ require 'spec_helper'
       click_linke "sample app"
       page.should have_selector 'title',  text: tull_title('Sample')
     end
-  end  
+    
+  end
 end
