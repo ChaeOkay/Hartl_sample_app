@@ -8,6 +8,8 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  password_digest :string(255)
+#  remember_token  :string(255)
+#  admin           :boolean          default(FALSE)
 #
 
 require 'spec_helper'
@@ -31,6 +33,7 @@ describe User do
   it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:microposts) }
+  it { should respond_to(:feed) }
   
   it { should be_valid }
   it { should_not be_admin}
@@ -160,5 +163,16 @@ describe User do
           Micropost.find_by_id(micropost.id).should be_nil
         end
       end
-    end
+      
+      describe "status" do
+        let(:unfollowed_post) do
+          FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+        end
+        
+        its(:feed) { should include(newer_micropost) }
+        its(:feed) { should include(older_micropost) }
+        its(:feed) { should_not include(unfollowed_post) }
+      end
+  
+  end
 end
