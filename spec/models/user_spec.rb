@@ -204,5 +204,4 @@ describe User do
         its(:followed_users) { should_not include(other_user) }
       end
     end
-    
 end
