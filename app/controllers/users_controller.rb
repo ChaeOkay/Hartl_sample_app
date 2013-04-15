@@ -13,6 +13,10 @@ class UsersController < ApplicationController
   
   def index
     @users = User.paginate(page: params[:page])
+    #to display alphabetically
+    #look up active record method
+    # @users = User.order(:name).paginate(page: params[:page])
+    #paginate(page: params[:page]) - the "page:" means when you (look at/use) the page, paginate the information. Lowest form of symbol to more complex, left to right. page is page. 
   end
   
   def create
